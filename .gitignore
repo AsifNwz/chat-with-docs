@@ -1,0 +1,21 @@
+# Global env
+.env
+
+# Python
+docling_worker/__pycache__/
+docling_worker/venv/
+
+# Node.js
+node_app/node_modules/
+node_app/.env*
+
+# Next.js
+nextjs/.next
+nextjs/node_modules/
+nextjs/.env*
+nextjs/.git*
+
+
+# Data / storage
+qdrant_data/
+uploads/
