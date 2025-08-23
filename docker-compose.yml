@@ -4,7 +4,7 @@ services:
     container_name: node_app
     working_dir: /app
     volumes:
-      - ./uploads_data:/uploads
+      - uploads_data:/uploads
     ports:
       - "8000:8000"
     environment:
@@ -21,7 +21,7 @@ services:
     container_name: docling_worker
     working_dir: /app
     volumes:
-      - ./uploads_data:/uploads
+      - uploads_data:/uploads
     depends_on:
       - rabbitmq
     networks:
@@ -67,5 +67,5 @@ networks:
   chatwithdocs-network:
 
 volumes:
-  # uploads_data:
+  uploads_data:
   qdrant_data:
