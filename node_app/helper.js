@@ -28,7 +28,7 @@ export const vectorStore = await QdrantVectorStore.fromExistingCollection(
 
 export async function addDocumentsToVectorStore(fileName) {
 	// const filePath = `../uploads_data/${fileName}`;
-	const filePath = `/uploads_data/${fileName}`;
+	const filePath = `/uploads/${fileName}`;
 
 	const fileSize = fs.statSync(filePath).size;
 	// read the md
