@@ -4,20 +4,22 @@ import { ModeToggle } from "@/components/ModeToggle";
 import UrlParser from "@/components/UrlParser";
 
 export default function Home() {
-	return (
-		<div className="relative grid grid-cols-12 gap-4 w-screen h-screen">
-			<div className="col-span-3 w-full  max-w-4xl mx-auto items-center justify-center border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 flex-col gap-10">
-				<UrlParser />
-				<p className="text-center mt-5"></p>
-				<FileDropper />
-			</div>
-			<div className="col-span-9">
-				<ChatComponent />
-			</div>
+  return (
+    <div className="relative grid h-screen w-screen grid-cols-12 gap-4">
+      <div className="col-span-3 hidden w-full max-w-4xl flex-col items-center justify-center gap-10 border border-dashed border-neutral-200 bg-white lg:flex dark:border-neutral-800 dark:bg-black">
+        <UrlParser />
+        <p className="mt-5 text-center"></p>
+        <FileDropper />
+      </div>
 
-			<div className="absolute top-4 right-4 rounded-full z-10">
-				<ModeToggle />
-			</div>
-		</div>
-	);
+      <div className="col-span-12 lg:col-span-9">
+        <ChatComponent />
+      </div>
+
+      {/* <div className="absolute bottom-5 left-5 z-10 hidden rounded-full lg:flex"> */}
+      <div className="absolute bottom-5 left-14 z-10 hidden rounded-full lg:flex">
+        <ModeToggle />
+      </div>
+    </div>
+  );
 }

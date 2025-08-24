@@ -192,9 +192,10 @@
   @apply rounded;
 }
 
-/* .hljs-light {
-  @import "highlight.js/styles/github.css";
-}
-.hljs-dark {
+/* .hljs {
   @import "highlight.js/styles/atom-one-dark.css";
 } */
+
+.hljs-light {
+  @import "highlight.js/styles/a11y-light.css";
+}

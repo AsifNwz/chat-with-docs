@@ -13,24 +13,35 @@ const b_url = `${base_url}/api/parse-url`;
 export default function UrlParser() {
   const [url, setUrl] = useState("");
   const [parseAll, setParseAll] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   async function handleParse() {
+    setIsSending(true);
     if (url.trim() && url.startsWith("http")) {
-      const response = await fetch(b_url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url, parseAll: parseAll }),
-      });
+      try {
+        const response = await fetch(b_url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: url, parseAll: parseAll }),
+        });
 
-      if (response.ok) {
-        toast.success("URL parsed successfully");
-        setParseAll(false);
-        setUrl("");
-      } else {
+        if (response.ok) {
+          toast.success("URL parsed successfully");
+          setParseAll(false);
+          setUrl("");
+          setIsSending(false);
+        } else {
+          toast.error("URL parse failed");
+          // setParseAll(false);
+          setIsSending(false);
+        }
+      } catch (error) {
+        console.error("Error parsing URL:", error);
         toast.error("URL parse failed");
-        // setParseAll(false);
+        setIsSending(false);
       }
     }
+    setIsSending(false);
   }
   return (
     <div className="mx-2 mt-10 flex items-center gap-2">
@@ -48,7 +59,11 @@ export default function UrlParser() {
           onCheckedChange={(checked) => setParseAll(checked === true)}
         />
 
-        <Button onClick={handleParse} className="h-7 rounded-sm">
+        <Button
+          onClick={handleParse}
+          disabled={isSending}
+          className="h-7 rounded-sm"
+        >
           Parse
         </Button>
       </div>

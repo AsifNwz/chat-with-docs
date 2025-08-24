@@ -15,6 +15,9 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 
 import dynamic from "next/dynamic";
+import { Button } from "./ui/button";
+import { Send } from "lucide-react";
+import { motion } from "framer-motion";
 
 const LineLoading = dynamic(() => import("./LineLoading"), { ssr: false });
 const LineLoadingTwo = dynamic(() => import("./LineLoadingTwo"), {
@@ -32,14 +35,15 @@ export default function ChatComponent() {
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  //   const [messages, setMessages] = useState<Message[]>([
-  //     {
-  //       role: "user",
-  //       content: "Hello",
-  //     },
-  //     {
-  //       role: "assistant",
-  //       content: `
+
+  // const [messages, setMessages] = useState<Message[]>([
+  //   {
+  //     role: "user",
+  //     content: "Hello",
+  //   },
+  //   {
+  //     role: "assistant",
+  //     content: `
 
   // # Markdown Test File
 
@@ -170,8 +174,9 @@ export default function ChatComponent() {
   // \`\`\`
 
   //     `,
-  //     },
-  //   ]);
+  //   },
+  // ]);
+
   const [isStreaming, setIsStreaming] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -251,40 +256,64 @@ export default function ChatComponent() {
       {/* Chat window */}
       <div
         ref={scrollRef}
-        className="bg-sidebar max-h-[80vh] min-h-[80vh] flex-1 space-y-4 overflow-auto p-4"
+        className="max-h-[80vh] min-h-[80vh] flex-1 space-y-4 overflow-auto p-4"
       >
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`max-w-[80%] overflow-auto rounded-md p-3 text-sm ${
-              msg.role === "user" ? "bg-accent ml-auto" : "mr-auto"
-            }`}
-          >
-            {msg.role === "assistant" ? (
-              <div className="markdown-content bg-accent/50 rounded-md p-4">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeHighlight]}
-                  components={{
-                    img: ({ src, alt }: any) => (
-                      <Image
-                        src={src}
-                        alt={alt}
-                        width={500}
-                        height={500}
-                        className="mb-2 max-w-2xl rounded"
-                      />
-                    ),
-                  }}
-                >
-                  {msg.content}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              msg.content
-            )}
+        {messages.length === 0 ? (
+          <div className="flex h-[90%] w-full items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              className="flex flex-col items-center justify-center px-6 text-center"
+            >
+              <h1 className="font-serif text-9xl font-extrabold tracking-tight text-stone-100 lg:text-9xl dark:text-stone-900">
+                Chat with Docs
+              </h1>
+            </motion.div>
           </div>
-        ))}
+        ) : (
+          // your normal chat UI
+
+          messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`w-full overflow-auto rounded-md p-3 text-sm md:max-w-[80%] ${
+                msg.role === "user"
+                  ? "ml-auto text-right"
+                  : "dark:bg-accent/70 bg-accent mr-auto"
+              }`}
+            >
+              {msg.role === "assistant" ? (
+                <div
+                  className={`markdown-content rounded-md p-4 ${theme === "light" ? "hljs-light" : ""}`}
+                >
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeHighlight]}
+                    components={{
+                      img: ({ src, alt }: any) => (
+                        <Image
+                          src={src}
+                          alt={alt}
+                          width={500}
+                          height={500}
+                          className="mx-2 mb-2 max-w-2xl rounded"
+                        />
+                      ),
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <span className="bg-accent rounded-sm px-3 py-2">
+                  {msg.content}
+                </span>
+              )}
+            </div>
+          ))
+        )}
+
         <div ref={bottomRef} />
       </div>
 
@@ -297,7 +326,7 @@ export default function ChatComponent() {
       ) : null}
 
       {/* Input area */}
-      <div className="bg-sidebar flex gap-2 border-t p-4">
+      <div className="bg-sidebar flex items-center justify-between gap-2 border-t p-4">
         <Textarea
           placeholder="Type a message..."
           value={input}
@@ -306,9 +335,13 @@ export default function ChatComponent() {
           onKeyDown={handleKeyDown}
           className="flex-1 resize-none rounded-md shadow-2xl"
         />
-        {/* <Button className="rounded-2xl" variant="outline" onClick={handleSend}>
-					<Send />
-				</Button> */}
+        <Button
+          className="flex size-14 rounded-xl lg:hidden"
+          variant="outline"
+          onClick={handleSend}
+        >
+          <Send />
+        </Button>
       </div>
     </div>
   );
