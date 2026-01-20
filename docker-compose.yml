@@ -56,7 +56,7 @@ services:
     container_name: nextjs
     working_dir: /app
     ports:
-      - "3001:3000"
+      - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_BASE=${NEXT_PUBLIC_API_BASE}
     depends_on:
