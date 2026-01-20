@@ -37,4 +37,4 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY . .
 
 # Default command
-CMD ["python","-u", "worker.py"]
+CMD ["python3", "-u", "worker.py"]
