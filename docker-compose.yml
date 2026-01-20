@@ -26,7 +26,7 @@ services:
       - rabbitmq
     networks:
       - chatwithdocs-network
-    command: ["python3", "-u", "worker.py"]
+    command: python3 -u worker.py
 
   rabbitmq:
     image: rabbitmq:3-management
